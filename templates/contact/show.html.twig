@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+    <h1>Contact</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ contact.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ contact.Nom }}</td>
+            </tr>
+            <tr>
+                <th>Civilite</th>
+                <td>{{ contact.Civilite }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ contact.Type }}</td>
+            </tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ contact.Adresse }}</td>
+            </tr>
+            <tr>
+                <th>CodePostal</th>
+                <td>{{ contact.CodePostal }}</td>
+            </tr>
+            <tr>
+                <th>Ville</th>
+                <td>{{ contact.Ville }}</td>
+            </tr>
+            <tr>
+                <th>Telephone</th>
+                <td>{{ contact.Telephone }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ contact.Email }}</td>
+            </tr>
+            <tr>
+                <th>MotifContact</th>
+                <td>{{ contact.MotifContact }}</td>
+            </tr>
+            <tr>
+                <th>AdresseExpertise</th>
+                <td>{{ contact.AdresseExpertise }}</td>
+            </tr>
+            <tr>
+                <th>Origine</th>
+                <td>{{ contact.Origine }}</td>
+            </tr>
+            <tr>
+                <th>Notes</th>
+                <td>{{ contact.Notes }}</td>
+            </tr>
+            <tr>
+                <th>Suites</th>
+                <td>{{ contact.Suites }}</td>
+            </tr>
+            <tr>
+                <th>Statut</th>
+                <td>{{ contact.Statut }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_contact_index') }}">back to list</a>
+
+    <a href="{{ path('app_contact_edit', {'id': contact.id}) }}">edit</a>
+
+    {{ include('contact/_delete_form.html.twig') }}
+{% endblock %}

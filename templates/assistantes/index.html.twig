@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Assistantes index{% endblock %}
+
+{% block body %}
+    <div class="container-fluid p-5">
+    <h1 class="text-center">Liste des assistantes</h1>
+
+        <a class="btn bg-success-subtle" href="{{ path('app_assistantes_new') }}">Nouvelle assistante</a>
+    <table class="table table-striped mt-3 text-center">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for assistante in assistantes %}
+            <tr>
+                <td>{{ assistante.Nom }}</td>
+                <td>
+                    <a class="btn bg-warning-subtle" href="{{ path('app_assistantes_edit', {'id': assistante.id}) }}">Modifier</a>
+                    <a class=" btn bg-danger-subtle" href="{{ path('app_assistantes_delete', {'id': assistante.id}) }}">Supprimer</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a class="btn bg-success-subtle" href="{{ path('app_assistantes_new') }}">Nouvelle assistante</a>
+    </div>
+{% endblock %}

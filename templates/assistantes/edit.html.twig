@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Assistantes{% endblock %}
+
+{% block body %}
+    <h1>Edit Assistantes</h1>
+
+    {{ include('assistantes/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_assistantes_index') }}">back to list</a>
+
+    {{ include('assistantes/_delete_form.html.twig') }}
+{% endblock %}

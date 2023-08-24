@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block all %}
+<html lang="">
+<body>
+{% block body %}
+    <h1 class="text-center pt-5">Suivi des contacts {{ nomFiliale.Nom }}</h1>
+        <div class="container-fluid p-5">
+            <table class="table table-striped text-center ">
+                <tr class="">
+                    <th>Asssitante</th>
+                    <th>Date contact</th>
+                    <th>Filiale</th>
+                    <th>Nom / Raison sociale</th>
+                    <th>Téléphone</th>
+                    <th>Adresse expertise</th>
+                    <th>Origine</th>
+                    <th>Suites</th>
+                    <th>Statut</th>
+                    <th>Action</th>
+                </tr>
+                {% for contact in contacts %}
+                    <tr>
+                        <td>{{ contact.assistante }}</td>
+                        <td>{{ contact.date |date('d/m/y') }}</td>
+                        <td>{{ contact.filiale }}</td>
+                        <td>{{ contact.nom }}</td>
+                        <td>{{ contact.telephone }}</td>
+                        <td>{{ contact.adresseExpertise }}</td>
+                        <td>{{ contact.origine }}</td>
+                        <td>{{ contact.suites }}</td>
+                        <td><a href="#"{% if contact.statut == 'Pas de retour expert' %} class="btn bg-danger-subtle"
+                            {% elseif contact.statut == 'En cours' %} class="btn bg-primary-subtle"
+                            {% elseif contact.statut == 'Devis signé' %} class="btn bg-success-subtle"
+                            {% elseif contact.statut == 'Annulé' %} class="btn bg-secondary-subtle"
+                            {% elseif contact.statut == 'Pas de retour client'%} class="btn bg-warning-subtle"
+                            {% else %} class=""{% endif %}>{{ contact.statut }}</a>
+                        </td>
+                        <td><a class="btn bg-warning-subtle  text-black-50 " style="text-decoration: none" href="{{ path('app_contact_edit', {'id' : contact.id}) }}">modifier</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+
+
+{% endblock %}
+</body>
+</html>
+{% endblock %}

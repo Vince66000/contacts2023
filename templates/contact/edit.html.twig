@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification contact{% endblock %}
+
+{% block body %}
+    <body>
+    <h1 class="text-center p-5">Modifier le contact</h1>
+
+    <div class="container m-auto">
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-2">{{ form_row(form.Assistante) }}</div>
+            <div class="col-2">{{ form_row(form.Civilite, {'label': 'Civilité'}) }}</div>
+            <div class="col-3">{{ form_row(form.Nom) }}</div>
+            <div class="col-2">{{ form_row(form.Filiale) }}</div>
+            <div class="col-3">{{ form_row(form.Origine) }}</div>
+        </div>
+        <div class="row">
+            <div class="col-6">{{ form_row(form.Adresse) }}</div>
+            <div class="col-3">{{ form_row(form.CodePostal) }}</div>
+            <div class="col-3">{{ form_row(form.Ville) }}</div>
+        </div>
+        <div class="row">
+            <div class="col-3">{{ form_row(form.Telephone, {'label':'Téléphone'}) }}</div>
+            <div class="col-3">{{ form_row(form.Email) }}</div>
+            <div class="col-2">{{ form_row(form.Type) }}</div>
+            <div class="col-4">{{ form_row(form.MotifContact) }}</div>
+        </div>
+        <div class="row">
+            <div class="col-4">{{ form_row(form.AdresseExpertise) }}</div>
+
+            <div class="col-4">{{ form_row(form.Intermediaire, {'label':'Intermédiaire'}) }}</div>
+        </div>
+        <div class="row">
+            <div class="col-3">{{ form_row(form.Notes) }}</div>
+            <div class="col-3">{{ form_row(form.Suites) }}</div>
+            <div class="col-3">{{ form_row(form.Statut) }}</div>
+            <div class="col-3">{{ form_row(form.Prospects) }}</div>
+        </div>
+        {{ form_widget(form) }}
+        <button class="btn bg-primary-subtle">{{ button_label | default('Enregistrer') }}</button>
+        <a class="btn bg-info-subtle" href="{{ path('app_contact_index') }}">Retour</a>
+        {{ form_end(form) }}
+
+    </div>
+    </body>
+
+{% endblock %}

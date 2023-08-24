@@ -1,0 +1,31 @@
+{
+  "name": "contacts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "@symfony/webpack-encore": "^4.4.0",
+    "bootstrap": "^5.3.1",
+    "@babel/core": "^7.15.5",
+    "@babel/preset-env": "^7.15.6",
+    "babel-loader": "^8.2.2",
+    "core-js": "^3.19.3",
+    "css-loader": "^6.3.0",
+    "file-loader": "^6.2.0",
+    "webpack": "^5.88.2"
+  },
+  "devDependencies": {
+    "webpack-cli": "^5.1.4",
+    "webpack-notifier": "^1.15.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production --progress"
+  },
+  "author": "",
+  "license": "ISC"
+}
