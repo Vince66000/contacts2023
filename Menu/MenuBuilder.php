@@ -28,7 +28,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
     public function createMainMenu($filiales)
     {
         $menu = $this->factory->createItem('root');
-        $menu->setChildrenAttribute('class', 'm-2 nav navbar-nav flex-row justify-content-around m-auto bg-white');
+        $menu->setChildrenAttribute('class', 'nav navbar-nav flex-row justify-content-around w-100');
         $menu->addChild('Global', ['route' => 'index']);
         $filiales = $this->entityManager->getRepository(Filiales::class)->findBy([], ['Nom' => 'ASC']);
         foreach ($filiales as $filiale) {

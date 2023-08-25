@@ -62,8 +62,8 @@ class ContactController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $contact->setDateUpdate(new \DateTime());
             $entityManager->flush();
-
             return $this->redirectToRoute('index', [], Response::HTTP_SEE_OTHER);
         }
 
