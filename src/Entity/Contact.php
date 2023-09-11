@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ContactRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
@@ -27,6 +28,10 @@ class Contact
     private ?string $Adresse = null;
 
     #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\Regex(
+        pattern: '/^[0-9]{6}$/',
+        message: 'Le code postal doit être composé de 5 chiffres.'
+    )]
     private ?string $CodePostal = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -36,6 +41,9 @@ class Contact
     private ?string $Telephone = null;
 
     #[ORM\Column(length: 100, nullable: true)]
+    #[Assert\Email(
+        message: 'Cette adresse est invalide.',
+    )]
     private ?string $Email = null;
 
     #[ORM\Column(length: 500, nullable: true)]

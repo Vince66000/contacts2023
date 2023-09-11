@@ -95,7 +95,9 @@ class ContactController extends AbstractController
 //        print_r($contacts);
         return $this->render('filiales/contacts.html.twig', [
             'contacts' => $contacts,
-            'nomFiliale' => $nomFiliale
+            'nomFiliale' => $nomFiliale,
+            'statuts' => $contactRepository->getStatus(),
+            'origines' => $contactRepository->getOrigins(),
 
         ]);
     }

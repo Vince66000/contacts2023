@@ -24,6 +24,7 @@ class HomeController extends \Symfony\Bundle\FrameworkBundle\Controller\Abstract
             'contacts' => $contactRepository->findAll(),
             'statuts' => $contactRepository->getStatus(),
             'origines' => $contactRepository->getOrigins(),
+            'filiales' => $filialesRepository->findAll(),
         ]);
     }
 

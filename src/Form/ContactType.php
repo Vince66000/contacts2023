@@ -5,7 +5,10 @@ namespace App\Form;
 use App\Entity\Assistantes;
 use App\Entity\Contact;
 use App\Entity\Filiales;
+use App\Repository\AssistantesRepository;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -20,7 +23,13 @@ class ContactType extends AbstractType
         $builder
 
             ->add('Assistante', EntityType::class, [
-                'class' => Assistantes::class
+                'class' => Assistantes::class,
+                'query_builder' => function (EntityRepository $er): QueryBuilder {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.Nom', 'ASC')
+                        ->andWhere('u.isActive = 1');
+
+                },
             ])
             ->add('Civilite', ChoiceType::class, [
                 'choices' => [

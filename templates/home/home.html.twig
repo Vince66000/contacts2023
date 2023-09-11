@@ -10,6 +10,21 @@
         {% block stylesheets %}
             <link rel="stylesheet" href="../../styles/global.css">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+            <style>
+                nav {
+                    background-color: #ffffff;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0 50px;
+                }
+                nav ul li a{
+                    text-decoration: none;
+                    color: #000000;
+                }
+
+            </style>
+
         {% endblock %}
 
         {% block javascripts %}
@@ -20,9 +35,10 @@
     </head>
     <body>
     {% block body %}
+
     <div class="container-fluid"
          style="
-             width: 100vw;
+             /*width: 100vw;*/
             height:100vh;
             background: rgb(215,202,180);
             background: linear-gradient(214deg, rgba(215,202,180,1) 59%, rgba(237,225,187,0.8855917366946778) 100%);
@@ -41,48 +57,48 @@
         </div>
         <div class="accordion container-fluid py-5 " id="accordionExample">
             <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button bg-secondary-subtle text-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <h2 class="accordion-header " id="headingOne">
+                    <a class="accordion-button collapsed btn bg-secondary-subtle m-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                         Statistiques
-                    </button>
+                    </a>
                 </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-{#                    <div class="accordion-body">#}
-                        <div id="collapseOne" class="collapse show bg-secondary-subtle" aria-labelledby="headingOne" data-parent="#accordion">
-                            <div class="row" >
-                                <div class="col-6">
-                                    <table class="table table-striped">
-                                        <th class="bg-dark-subtle text-center">Status</th>
-                                        {% for statut in statuts %}
-                                            <tr>
-                                                <td {% if statut.statut == 'Pas de retour expert' %} class="bg-danger-subtle"
-                                                {% elseif statut.statut == 'En cours' %} class="bg-primary-subtle"
-                                                {% elseif statut.statut == 'Devis signé' %} class="bg-success-subtle"
-                                                {% elseif statut.statut == 'Annulé' %} class="bg-secondary-subtle"
-                                                {% elseif statut.statut == 'Pas de retour client'%} class="bg-warning-subtle"
-                                                {% else %} class=""{% endif %}>{{ statut.statut }} : {{ statut.nombre }}</td>
-                                            </tr>
-                                        {% endfor %}
+                <div id="collapseOne" class="accordion-collapse collapse  " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    {#                    <div class="accordion-body">#}
+                    <div id="collapseOne" class="collapse  bg-secondary-subtle" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div class="row" >
+                            <div class="col-6">
+                                <table class="table table-striped p-2">
+                                    <th class="bg-dark-subtle text-center">Statuts</th>
+                                    {% for statut in statuts %}
                                         <tr>
-                                            <td>Total contacts : {{ statuts | length }}</td>
+                                            <td {% if statut.statut == 'Pas de retour expert' %} class="bg-danger-subtle"
+                                            {% elseif statut.statut == 'En cours' %} class="bg-primary-subtle"
+                                            {% elseif statut.statut == 'Devis signé' %} class="bg-success-subtle"
+                                            {% elseif statut.statut == 'Annulé' %} class="bg-secondary-subtle"
+                                            {% elseif statut.statut == 'Pas de retour client'%} class="bg-warning-subtle"
+                                            {% else %} class=""{% endif %}><span class="fw-bold">{{ statut.statut }} :</span> {{ statut.nombre }}</td>
                                         </tr>
-                                    </table>
-                                </div>
-                                <div class="col-6" >
-                                    <table class="table table-striped">
-                                        <th class="bg-dark-subtle text-center">Origine</th>
+                                    {% endfor %}
+                                    <tr>
+                                        <td>Total contacts : {{ statuts | length }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-6" >
+                                <table class="table table-striped p-2">
+                                    <th class="bg-dark-subtle text-center">Origine</th>
 
-                                        {% for origine in origines %}
-                                            <tr>
-                                                <td>{{ origine.origine }} : {{ origine.nombre }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                    </table>
-                                </div>
+                                    {% for origine in origines %}
+                                        <tr>
+                                            <td><span class="fw-bold">{{ origine.origine }} :</span> {{ origine.nombre }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
                             </div>
                         </div>
                     </div>
-{#                </div>#}
+                </div>
+                {#                </div>#}
             </div>
 
         </div>
@@ -128,7 +144,7 @@
                 </table>
             </div>
         </div>
-
+    </div>
 
         {% endblock %}
     </body>

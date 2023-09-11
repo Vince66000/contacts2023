@@ -27,6 +27,10 @@ class Assistantes
     #[ORM\OneToMany(mappedBy: 'Assistante', targetEntity: Contact::class, cascade: ['persist'])]
     private Collection $contacts;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isActive = null;
+
+
     public function __construct()
     {
         $this->contacts = new ArrayCollection();
@@ -75,6 +79,18 @@ class Assistantes
                 $contact->setAssistante(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

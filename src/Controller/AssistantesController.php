@@ -11,9 +11,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 #[Route('/assistantes')]
 class AssistantesController extends AbstractController
 {
+
+//    public function __construct(Assistantes $assistantes)
+//    {
+//        $assistantes->setIsActive(true);
+//    }
+
     #[Route('/', name: 'app_assistantes_index', methods: ['GET'])]
     public function index(AssistantesRepository $assistantesRepository): Response
     {

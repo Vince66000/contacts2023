@@ -11,25 +11,17 @@
             {{ encore_entry_link_tags('app') }}
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
                   rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
         {% endblock %}
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-            <script>
-                $(document).ready(() => {
-                    const $ddBtn = $('.my-jquery-collapse')
-                    const $dd = $($ddBtn.data('my-target'))
-                    $ddBtn.on('click', () => {
-                        $dd.toggleClass('d-none')
-                    })
-                })
-            </script>
         {% endblock %}
     </head>
     <body>
-        <nav class="">
+        <nav class="navbar navbar-expand-lg bg-light">
             {{ knp_menu_render('main', {template: 'menu.html.twig'}) }}
         </nav>
         {% block body %}

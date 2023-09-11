@@ -21,6 +21,16 @@ class AssistantesRepository extends ServiceEntityRepository
         parent::__construct($registry, Assistantes::class);
     }
 
+    public function getActivesAssistantes() {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.isActive = :val')
+            ->setParameter('val', true)
+            ->orderBy('a.Nom', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 //    /**
 //     * @return Assistantes[] Returns an array of Assistantes objects
 //     */
@@ -36,13 +46,5 @@ class AssistantesRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Assistantes
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+
 }

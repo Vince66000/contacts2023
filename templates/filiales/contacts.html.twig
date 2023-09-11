@@ -4,8 +4,64 @@
 <html lang="">
 <body>
 {% block body %}
-    <h1 class="text-center pt-5">Suivi des contacts {{ nomFiliale.Nom }}</h1>
-        <div class="container-fluid p-5">
+    <div class="container-fluid">
+        <h1 class="text-center pt-5">Suivi des contacts {{ nomFiliale.Nom }}</h1>
+        <div class="container-fluid row m-auto">
+            <div class="col-6 d-flex flex-row justify-content-start">
+                <a class="btn bg-success-subtle  rounded-2 text-black-50 " style="text-decoration: none" href="{{ path('app_contact_new') }}">Nouveau contact</a>
+                <a class="btn bg-success-subtle  rounded-2 text-black-50 " style="text-decoration: none" href="{{ path('app_filiales_new') }}">Nouvelle filiale</a>
+                <a class=" btn bg-success-subtle  rounded-2 text-black-50 " style="text-decoration: none" href="{{ path('app_assistantes_new') }}">Nouvelle assistante</a>
+            </div>
+            <div class="col-6 d-flex flex-row justify-content-end">
+                <a class="btn bg-warning-subtle  rounded-2 text-black-50 " style="text-decoration: none" href="{{ path('app_assistantes_index') }}">Liste des assistantes</a>
+                <a class="btn bg-warning-subtle  rounded-2 text-black-50 " style="text-decoration: none" href="{{ path('app_filiales_index') }}">Liste des filiales</a>
+            </div>
+        </div>
+        <div class="accordion container-fluid py-5 " id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header " id="headingOne">
+                    <a class="accordion-button collapsed btn bg-secondary-subtle m-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Statistiques
+                    </a>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse  " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div id="collapseOne" class="collapse  bg-secondary-subtle" aria-labelledby="headingOne" data-parent="#accordion">
+                        <div class="row" >
+                            <div class="col-6">
+                                <table class="table table-striped p-2">
+                                    <th class="bg-dark-subtle text-center">Statuts</th>
+                                    {% for statut in statuts %}
+                                        <tr>
+                                            <td {% if statut.statut == 'Pas de retour expert' %} class="bg-danger-subtle"
+                                            {% elseif statut.statut == 'En cours' %} class="bg-primary-subtle"
+                                            {% elseif statut.statut == 'Devis signé' %} class="bg-success-subtle"
+                                            {% elseif statut.statut == 'Annulé' %} class="bg-secondary-subtle"
+                                            {% elseif statut.statut == 'Pas de retour client'%} class="bg-warning-subtle"
+                                            {% else %} class=""{% endif %}><span class="fw-bold">{{ statut.statut }} :</span> {{ statut.nombre }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <td>Total contacts : {{ statuts | length }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-6" >
+                                <table class="table table-striped p-2">
+                                    <th class="bg-dark-subtle text-center">Origine</th>
+
+                                    {% for origine in origines %}
+                                        <tr>
+                                            <td><span class="fw-bold">{{ origine.origine }} :</span> {{ origine.nombre }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
             <table class="table table-striped text-center ">
                 <tr class="">
                     <th>Asssitante</th>
@@ -41,7 +97,7 @@
                 {% endfor %}
             </table>
         </div>
-
+    </div>
 
 
 {% endblock %}
