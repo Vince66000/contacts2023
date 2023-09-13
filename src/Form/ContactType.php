@@ -48,12 +48,11 @@ class ContactType extends AbstractType
             ->add('Email')
             ->add('Type', ChoiceType::class, [
                 'choices' => [
-                    'Expertise privée' => 'Expertise privée',
-                    'Expertise judiciaire' => 'Expertise judiciaire',
-                    'Assistance à réception' => 'Assistance à réception',
-                    'Catastrophe naturelle' => 'Catastrophe naturelle',
-                    'Expertise assuré' => 'Expertise assuré',
-                    'Expertise avant achat' => 'Expertise avant achat',
+                    'PRIVE' => 'Expertise privée',
+                    'JUD' => 'Expertise judiciaire',
+                    'AR' => 'Assistance à réception',
+                    'EVAL' => 'Evaluation',
+                    'DTG' => 'Diagnostic technique global'
                 ]
             ])
             ->add('MotifContact', TextareaType::class, [

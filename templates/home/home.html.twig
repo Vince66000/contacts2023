@@ -137,7 +137,10 @@
                                 {% else %} class=""{% endif %}>{{ contact.statut }}</a>
                             </td>
                             <td class="fs-6">{{ contact.dateUpdate |date('d/m/y') }}</td>
-                            <td><a class="btn bg-warning-subtle  text-black-50 " style="text-decoration: none" href="{{ path('app_contact_edit', {'id' : contact.id}) }}">modifier</a></td>
+                            <td>
+                                <a class="btn bg-warning-subtle  text-black-50 " style="text-decoration: none" href="{{ path('app_contact_edit', {'id' : contact.id}) }}">modifier</a>
+                                <a class="btn bg-success-subtle" href="{{ path('creerClient', {'id': contact.id}) }}"  >créer</a>
+                            </td>
                         </tr>
 
                     {% endfor %}
