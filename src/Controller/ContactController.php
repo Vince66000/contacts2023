@@ -11,12 +11,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+
 
 
 
@@ -100,16 +102,16 @@ class ContactController extends AbstractController
     {
         $filiale = $id;
         $nomFiliale = $filialesRepository->find($id);
-        dump($nomFiliale);
         $contacts = $contactRepository->findBy(['Filiale' => $filiale]);
-//        print_r($contacts);
+        dump($contactRepository->getStatusByFiliale($id));
         return $this->render('filiales/contacts.html.twig', [
             'contacts' => $contacts,
             'nomFiliale' => $nomFiliale,
-            'statuts' => $contactRepository->getStatus(),
-            'origines' => $contactRepository->getOrigins(),
+            'statuts' => $contactRepository->getStatusByFiliale($id),
+            'origines' => $contactRepository->getOriginByFiliale($id),
 
         ]);
+
     }
 
 
@@ -149,11 +151,10 @@ class ContactController extends AbstractController
      * @throws TransportExceptionInterface
      */
     #[Route('creerClient/{id}', name: 'creerClient', methods: ['GET', 'POST'])]
-    public function creerClient(ContactRepository $contactRepository, $id)
+    public function creerClient(ContactRepository $contactRepository, $id): \Symfony\Component\HttpFoundation\RedirectResponse
     {
 
         $token = $this->getToken();
-
 
         /**
          * Création client
@@ -167,15 +168,19 @@ class ContactController extends AbstractController
             [
                 'auth_bearer'=>$token ,
                 'headers' =>
-                ['X-Avensys-API-Key' => 'puKukTaOh0zDxnMg0zD4DAeWoKnTIKlz'],
+                    ['X-Avensys-API-Key' => 'puKukTaOh0zDxnMg0zD4DAeWoKnTIKlz'],
                 'body' =>
                     [
                         'Libelle'=> $contact->getNom(),
                         'Adresse'=> [
-                          'Nom' => $contact->getNom(),
-                          'Adr1' => $contact->getAdresse(),
-                          'CPVille' => $contact->getCodePostal() . ' ' . $contact->getVille(),
+                            'Nom' => $contact->getNom(),
+                            'Adr1' => $contact->getAdresse(),
+                            'CPVille' => $contact->getCodePostal() . ' ' . $contact->getVille(),
                         ],
+                        'MoyenCommunication' => [
+                            'Telephone' => $contact->getTelephone(),
+                            'Email' => $contact->getEmail(),
+                        ]
                     ]
             ]);
 
@@ -185,7 +190,8 @@ class ContactController extends AbstractController
         $trouverIdClient = $this->client->request(
             'GET',
             $compagnie,
-            ['auth_bearer'=>$token, 'headers' =>  ['X-Avensys-API-Key' => 'puKukTaOh0zDxnMg0zD4DAeWoKnTIKlz'] ]
+            ['auth_bearer'=>$token,
+                'headers' =>  ['X-Avensys-API-Key' => 'puKukTaOh0zDxnMg0zD4DAeWoKnTIKlz'] ]
         );
 
         try {
@@ -199,24 +205,121 @@ class ContactController extends AbstractController
                 $idClient = $listeClient['Id'];
             }
         }
-        dump($idClient);
-        return $this->render('contact/index.html.twig');
+
+        /**
+         * Récupération de l'id du bureau pour créer le dossier
+         */
+        $bureau = 'https://aeb.a26.fr/dossier/restapi/v1/Bureaux';
+        $trouverIdBureau = $this->client->request(
+            'GET',
+            $bureau,
+            ['auth_bearer'=>$token,
+                'headers' =>  ['X-Avensys-API-Key' => 'puKukTaOh0zDxnMg0zD4DAeWoKnTIKlz'] ]
+        );
+
+        try {
+            $listeBureaux = json_decode($trouverIdBureau->getContent(), true);
+        } catch (ClientExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface|TransportExceptionInterface $e) {
+            dump('L\'erreur suivante a été relevée : ' . $e->getMessage());
+        }
+
+        foreach ($listeBureaux as $bureau) {
+            if ($bureau['Code'] === $contact->getFiliale()->getIDAvensys()) {
+                $idBureau = $bureau['Id'];
+            }
+        }
+
+        $expert = explode("-",$contact->getFiliale());
+        $expert = $expert[1];
+        $departement = substr($contact->getCodePostalExp(),0,2);
+
+        dump($body =
+            [
+                'IdCompagnie'=> $idClient,
+                'Libelle'=> $contact->getNom() .' - ' . strtoupper($contact->getVille()),
+                'IdMission' => $contact->getType(),
+                'IdBureau' => $idBureau,
+                'DateReceptionMission' => date('Y-m-d'),
+                'IdBureauTraitant' => $idBureau,
+                'IdActeurExpert' => trim($expert),
+                'Departement' => $departement
+            ],
+        );
+
+        $dossier = 'https://aeb.a26.fr/dossier/restapi/v1/Dossiers';
+        $creationDossier = $this->client->request(
+            'POST',
+            $dossier,
+            [
+                'auth_bearer'=> $token,
+                'headers' => ['X-Avensys-API-Key' => 'puKukTaOh0zDxnMg0zD4DAeWoKnTIKlz'],
+                'body' =>
+                    [
+                        'IdCompagnie'=> $idClient,
+                        'Libelle'=> $contact->getNom() .' ' . strtoupper($contact->getVille()),
+                        'IdMission' => $contact->getType(),
+                        'IdBureau' => $idBureau,
+                        'IdBureauTraitant' => $idBureau,
+                        'IdActeurExpert' => trim($expert),
+                        'Departement' => $departement
+                    ],
+            ]
+        );
+        $dateDebut = date('Y-m-d', strtotime('-1 hour'));
+        $dateFin = date('Y-m-d');
+
+        $idDossier = 'https://aeb.a26.fr/dossier/restapi/v1/DossiersLight/Search';
+        $trouverIdDossier = $this->client->request(
+            'GET',
+            $idDossier,
+            ['auth_bearer'=>$token,
+                'headers' =>  ['X-Avensys-API-Key' => 'puKukTaOh0zDxnMg0zD4DAeWoKnTIKlz'],
+                'query' => [
+                            'dateCreationDebut' => $dateDebut,
+                            'dateCreationFin' => $dateFin,
+                    ]
+                ],
+        );
+
+        $dossiers = [];
+        try {
+            $dossiers = json_decode($trouverIdDossier->getContent(), true);
+        } catch (ClientExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface|TransportExceptionInterface $e) {
+            dump('L\'erreur suivante a été relevée : ' . $e->getMessage());
+        }
+
+//        dump(gettype($dossiers));
+        foreach ($dossiers as $dossier) {
+            if ($dossier['NomCompagnie'] === $contact->getNom()) {
+                $codeDossier = $dossier['Id'];
+            }
+        }
+
+        $adresse = 'https://aeb.a26.fr/dossier/restapi/v1/AdressesDossier';
+        $creationAdresse = $this->client->request(
+            'POST',
+            $adresse,
+            [
+                'auth_bearer'=> $token,
+                'headers' => ['X-Avensys-API-Key' => 'puKukTaOh0zDxnMg0zD4DAeWoKnTIKlz'],
+                'body' =>
+                    [
+                        'IdDossier'=> $codeDossier,
+                        'Nom'=> $contact->getNom(),
+                        'Adr1'=> $contact->getAdresseExp(),
+                        'CPVille'=> $contact->getCodePostalExp() . ' ' . $contact->getVilleExp(),
+                        'Titre' => 'Lieu d\'expertise',
+                    ],
+            ]
+        );
+
+        return $this->redirectToRoute('index', [], Response::HTTP_SEE_OTHER);
     }
 
 
-//    public function creerDossier($id, ContactRepository $contactRepository, FilialesRepository $filialesRepository): string
-//    {
-//        $rToken = $this->getToken();
-//        $uri = 'https://aeb.a26.fr/dossier/restapi/v1/Bureaux';
-//        $request = $this->client->request('GET', $uri, ['auth_bearer'=>$rToken ,'headers' =>  ['X-Avensys-API-Key' => 'puKukTaOh0zDxnMg0zD4DAeWoKnTIKlz'] ]);
-//        $filiale = $id;
-//        $contact = $contactRepository->find($id);
-//        $restult = json_decode($request->getContent(), true);
-//        dump($restult);
-//        $contacts = $contactRepository->findBy(['Filiale' => $filiale]);
-//
-//        return  $request->getContent();
-//
-//    }
+
+
+
+
 
 }

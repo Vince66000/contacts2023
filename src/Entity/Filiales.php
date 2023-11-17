@@ -28,6 +28,9 @@ class Filiales
     #[ORM\OneToMany(mappedBy: 'Prospects', targetEntity: Contact::class)]
     private Collection $contactsProspect;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $ID_Avensys = null;
+
     public function __construct()
     {
         $this->contacts = new ArrayCollection();
@@ -107,6 +110,18 @@ class Filiales
                 $contactsProspect->setProspects(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIDAvensys(): ?string
+    {
+        return $this->ID_Avensys;
+    }
+
+    public function setIDAvensys(?string $ID_Avensys): static
+    {
+        $this->ID_Avensys = $ID_Avensys;
 
         return $this;
     }

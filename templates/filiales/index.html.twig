@@ -3,33 +3,36 @@
 {% block title %}Filiales index{% endblock %}
 
 {% block body %}
-    <h1>Filiales index</h1>
+    <div class="container-fluid p-5">
+        <h1 class="text-center">Liste des filiales</h1>
 
-    <table class="table">
-        <thead>
+        <a  class="btn bg-success-subtle" href="{{ path('app_filiales_new') }}">Nouvelle filiale</a>
+        <table class="table table-striped mt-3 text-center">
+            <thead>
             <tr>
-                <th>Id</th>
                 <th>Nom</th>
+                <th>Code Avensys</th>
                 <th>actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for filiale in filiales %}
-            <tr>
-                <td>{{ filiale.id }}</td>
-                <td>{{ filiale.Nom }}</td>
-                <td>
-                    <a href="{{ path('app_filiales_show', {'id': filiale.id}) }}">show</a>
-                    <a href="{{ path('app_filiales_edit', {'id': filiale.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for filiale in filiales %}
+                <tr>
+                    <td>{{ filiale.Nom }}</td>
+                    <td>{{ filiale.iDAvensys }}</td>
+                    <td>
+                        <a class="btn bg-warning-subtle"  href="{{ path('app_filiales_show', {'id': filiale.id}) }}">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('app_filiales_new') }}">Create new</a>
+        <a class="btn bg-success-subtle" href="{{ path('app_filiales_new') }}">Nouvelle filiale</a>
+    </div>
+
 {% endblock %}

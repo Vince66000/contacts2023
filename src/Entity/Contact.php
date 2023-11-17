@@ -29,7 +29,7 @@ class Contact
 
     #[ORM\Column(length: 20, nullable: true)]
     #[Assert\Regex(
-        pattern: '/^[0-9]{6}$/',
+        pattern: '/^[0-9]{5}$/',
         message: 'Le code postal doit être composé de 5 chiffres.'
     )]
     private ?string $CodePostal = null;
@@ -42,15 +42,14 @@ class Contact
 
     #[ORM\Column(length: 100, nullable: true)]
     #[Assert\Email(
-        message: 'Cette adresse est invalide.',
+        message: 'Ce champs doit contir un email valide.',
     )]
     private ?string $Email = null;
 
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $MotifContact = null;
 
-    #[ORM\Column(length: 500, nullable: true)]
-    private ?string $AdresseExpertise = null;
+
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $Origine = null;
@@ -81,6 +80,24 @@ class Contact
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_update = null;
+
+    #[ORM\Column(length: 500, nullable: true)]
+    private ?string $AdresseExp = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $CodePostalExp = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $VilleExp = null;
+
+    #[ORM\Column(length: 500, nullable: true)]
+    private ?string $AdresseInter = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $CodePostalInter = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $VilleInter = null;
 
 
     public function __construct() {
@@ -201,17 +218,17 @@ class Contact
         return $this;
     }
 
-    public function getAdresseExpertise(): ?string
-    {
-        return $this->AdresseExpertise;
-    }
-
-    public function setAdresseExpertise(?string $AdresseExpertise): static
-    {
-        $this->AdresseExpertise = $AdresseExpertise;
-
-        return $this;
-    }
+//    public function getAdresseExpertise(): ?string
+//    {
+//        return $this->AdresseExpertise;
+//    }
+//
+//    public function setAdresseExpertise(?string $AdresseExpertise): static
+//    {
+//        $this->AdresseExpertise = $AdresseExpertise;
+//
+//        return $this;
+//    }
 
     public function getOrigine(): ?string
     {
@@ -333,4 +350,78 @@ class Contact
 
         return $this;
     }
+
+    public function getAdresseExp(): ?string
+    {
+        return $this->AdresseExp;
+    }
+
+    public function setAdresseExp(?string $AdresseExp): static
+    {
+        $this->AdresseExp = $AdresseExp;
+
+        return $this;
+    }
+
+    public function getCodePostalExp(): ?string
+    {
+        return $this->CodePostalExp;
+    }
+
+    public function setCodePostalExp(?string $CodePostalExp): static
+    {
+        $this->CodePostalExp = $CodePostalExp;
+
+        return $this;
+    }
+
+    public function getVilleExp(): ?string
+    {
+        return $this->VilleExp;
+    }
+
+    public function setVilleExp(?string $VilleExp): static
+    {
+        $this->VilleExp = $VilleExp;
+
+        return $this;
+    }
+
+    public function getAdresseInter(): ?string
+    {
+        return $this->AdresseInter;
+    }
+
+    public function setAdresseInter(?string $AdresseInter): static
+    {
+        $this->AdresseInter = $AdresseInter;
+
+        return $this;
+    }
+
+    public function getCodePostalInter(): ?string
+    {
+        return $this->CodePostalInter;
+    }
+
+    public function setCodePostalInter(?string $CodePostalInter): static
+    {
+        $this->CodePostalInter = $CodePostalInter;
+
+        return $this;
+    }
+
+    public function getVilleInter(): ?string
+    {
+        return $this->VilleInter;
+    }
+
+    public function setVilleInter(?string $VilleInter): static
+    {
+        $this->VilleInter = $VilleInter;
+
+        return $this;
+    }
+
+
 }

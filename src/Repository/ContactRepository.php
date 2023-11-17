@@ -53,6 +53,35 @@ class ContactRepository extends ServiceEntityRepository
         return $resultSet->fetchAllAssociative();
     }
 
+    public function getStatusByFiliale($id) :array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT count(statut) as "nombre", statut as "statut" FROM contact 
+            where filiale_id ='  . $id .' 
+            group by statut
+            ';
+
+        $resultSet = $conn->executeQuery($sql);
+
+        return $resultSet->fetchAllAssociative();
+    }
+
+    public function getOriginByFiliale($id) :array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT count(origine) as "nombre", origine as "origine" FROM contact 
+            where filiale_id = '  . $id .' 
+            group by origine
+            ';
+
+        $resultSet = $conn->executeQuery($sql);
+
+        return $resultSet->fetchAllAssociative();
+    }
 
 //    /**
 //     * @return Contact[] Returns an array of Contact objects

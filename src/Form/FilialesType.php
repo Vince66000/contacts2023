@@ -13,6 +13,10 @@ class FilialesType extends AbstractType
     {
         $builder
             ->add('Nom')
+            ->add('ID_Avensys', null, [
+                'label' => 'Correspondance Avensys',
+                'required' => false,
+            ])
         ;
     }
 

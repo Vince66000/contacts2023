@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function Sodium\add;
 
 class ContactType extends AbstractType
 {
@@ -44,21 +45,23 @@ class ContactType extends AbstractType
             ->add('Adresse')
             ->add('CodePostal')
             ->add('Ville')
+            ->add('AdresseExp')
+            ->add('CodePostalExp')
+            ->add('VilleExp')
             ->add('Telephone')
             ->add('Email')
             ->add('Type', ChoiceType::class, [
                 'choices' => [
-                    'PRIVE' => 'Expertise privée',
-                    'JUD' => 'Expertise judiciaire',
-                    'AR' => 'Assistance à réception',
-                    'EVAL' => 'Evaluation',
-                    'DTG' => 'Diagnostic technique global'
+                    'Expertise privée' => 'PRIVE',
+                    'Expertise judiciaire' => 'JUD',
+                    'Assistance à réception' => 'AR',
+                    'Evaluation' => 'EVAL',
+                    'Diagnostic technique global' => 'DTG'
                 ]
             ])
             ->add('MotifContact', TextareaType::class, [
                 'attr' => [
                     'rows' => 2]])
-            ->add('AdresseExpertise')
             ->add('Origine', ChoiceType::class, [
                 'choices' => [
                     'Site internet' => 'Site internet',
@@ -92,8 +95,11 @@ class ContactType extends AbstractType
             ->add('Prospects', EntityType::class, [
                 'class' => Filiales::class
             ])
-
+            ->add('AdresseInter')
+            ->add('CodePostalInter')
+            ->add('VilleInter')
         ;
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

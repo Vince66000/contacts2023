@@ -36,120 +36,130 @@
     <body>
     {% block body %}
 
-    <div class="container-fluid"
-         style="
+        <div class="container-fluid"
+             style="
              /*width: 100vw;*/
             height:100vh;
             background: rgb(215,202,180);
             background: linear-gradient(214deg, rgba(215,202,180,1) 59%, rgba(237,225,187,0.8855917366946778) 100%);
 ">
-        <h1 class="text-center pt-5">Suivi des contacts - général</h1>
-        <div class="container-fluid">
-            <div class="py-2">
-                <a class="bg-success-subtle p-2 rounded-2 text-black-50" style="text-decoration: none" href="{{ path('app_contact_new') }}">Nouveau contact</a>
-                <a class="bg-success-subtle p-2 rounded-2 text-black-50" style="text-decoration: none" href="{{ path('app_filiales_new') }}">Nouvelle filiale</a>
-                <a class="bg-success-subtle p-2 rounded-2 text-black-50" style="text-decoration: none" href="{{ path('app_assistantes_new') }}">Nouvelle assistante</a>
+{#            {% for message in app.flashes(success)  %}#}
+{#                    <div class="alert alert-success">#}
+{#                        {{ message.message }}#}
+{#                    </div>#}
+{#            {% endfor %}#}
+{#            {% for message in app.flashes(danger) %}#}
+{#                    <div class="alert alert-danger">#}
+{#                        {{ message.message }}#}
+{#                    </div>#}
+{#            {% endfor %}#}
+            <h1 class="text-center pt-5">Suivi des contacts - général</h1>
+            <div class="container-fluid">
+                <div class="py-2">
+                    <a class="bg-success-subtle p-2 rounded-2 text-black-50" style="text-decoration: none" href="{{ path('app_contact_new') }}">Nouveau contact</a>
+                    <a class="bg-success-subtle p-2 rounded-2 text-black-50" style="text-decoration: none" href="{{ path('app_filiales_new') }}">Nouvelle filiale</a>
+                    <a class="bg-success-subtle p-2 rounded-2 text-black-50" style="text-decoration: none" href="{{ path('app_assistantes_new') }}">Nouvelle assistante</a>
+                </div>
+                <div class="py-4">
+                    <a class="bg-warning-subtle p-2 rounded-2 text-black-50" style="text-decoration: none" href="{{ path('app_assistantes_index') }}">Liste des assistantes</a>
+                    <a class="bg-warning-subtle p-2 rounded-2 text-black-50" style="text-decoration: none" href="{{ path('app_filiales_index') }}">Liste des filiales</a>
+                </div>
             </div>
-            <div class="py-4">
-                <a class="bg-warning-subtle p-2 rounded-2 text-black-50" style="text-decoration: none" href="{{ path('app_assistantes_index') }}">Liste des assistantes</a>
-                <a class="bg-warning-subtle p-2 rounded-2 text-black-50" style="text-decoration: none" href="{{ path('app_filiales_index') }}">Liste des filiales</a>
-            </div>
-        </div>
-        <div class="accordion container-fluid py-5 " id="accordionExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header " id="headingOne">
-                    <a class="accordion-button collapsed btn bg-secondary-subtle m-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Statistiques
-                    </a>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse  " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                    {#                    <div class="accordion-body">#}
-                    <div id="collapseOne" class="collapse  bg-secondary-subtle" aria-labelledby="headingOne" data-parent="#accordion">
-                        <div class="row" >
-                            <div class="col-6">
-                                <table class="table table-striped p-2">
-                                    <th class="bg-dark-subtle text-center">Statuts</th>
-                                    {% for statut in statuts %}
+            <div class="accordion container-fluid py-5 " id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header " id="headingOne">
+                        <a class="accordion-button collapsed btn bg-secondary-subtle m-auto" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Statistiques
+                        </a>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse  " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        {#                    <div class="accordion-body">#}
+                        <div id="collapseOne" class="collapse  bg-secondary-subtle" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="row" >
+                                <div class="col-6">
+                                    <table class="table table-striped p-2">
+                                        <th class="bg-dark-subtle text-center">Statuts</th>
+                                        {% for statut in statuts %}
+                                            <tr>
+                                                <td {% if statut.statut == 'Pas de retour expert' %} class="bg-danger-subtle"
+                                                {% elseif statut.statut == 'En cours' %} class="bg-primary-subtle"
+                                                {% elseif statut.statut == 'Devis signé' %} class="bg-success-subtle"
+                                                {% elseif statut.statut == 'Annulé' %} class="bg-secondary-subtle"
+                                                {% elseif statut.statut == 'Pas de retour client'%} class="bg-warning-subtle"
+                                                {% else %} class=""{% endif %}><span class="fw-bold">{{ statut.statut }} :</span> {{ statut.nombre }}</td>
+                                            </tr>
+                                        {% endfor %}
                                         <tr>
-                                            <td {% if statut.statut == 'Pas de retour expert' %} class="bg-danger-subtle"
-                                            {% elseif statut.statut == 'En cours' %} class="bg-primary-subtle"
-                                            {% elseif statut.statut == 'Devis signé' %} class="bg-success-subtle"
-                                            {% elseif statut.statut == 'Annulé' %} class="bg-secondary-subtle"
-                                            {% elseif statut.statut == 'Pas de retour client'%} class="bg-warning-subtle"
-                                            {% else %} class=""{% endif %}><span class="fw-bold">{{ statut.statut }} :</span> {{ statut.nombre }}</td>
+                                            <td>Total contacts : {{ statuts | length }}</td>
                                         </tr>
-                                    {% endfor %}
-                                    <tr>
-                                        <td>Total contacts : {{ statuts | length }}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="col-6" >
-                                <table class="table table-striped p-2">
-                                    <th class="bg-dark-subtle text-center">Origine</th>
+                                    </table>
+                                </div>
+                                <div class="col-6" >
+                                    <table class="table table-striped p-2">
+                                        <th class="bg-dark-subtle text-center">Origine</th>
 
-                                    {% for origine in origines %}
-                                        <tr>
-                                            <td><span class="fw-bold">{{ origine.origine }} :</span> {{ origine.nombre }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </table>
+                                        {% for origine in origines %}
+                                            <tr>
+                                                <td><span class="fw-bold">{{ origine.origine }} :</span> {{ origine.nombre }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    {#                </div>#}
                 </div>
-                {#                </div>#}
+
             </div>
+            <div>
 
-        </div>
-        <div>
-
-            <div class="container-fluid">
-                <table class="table table-striped text-center">
-                    <tr class="">
-                        <th>Asssitante</th>
-                        <th>Date contact</th>
-                        <th>Filiale</th>
-                        <th>Nom / Raison sociale</th>
-                        <th>Téléphone</th>
-                        <th>Adresse expertise</th>
-                        <th>Origine</th>
-                        <th>Suites</th>
-                        <th>Statut</th>
-                        <th>Dernière MAJ</th>
-                        <th>Action</th>
-                    </tr>
-                    {% for contact in contacts %}
-                        <tr>
-                            <td>{{ contact.assistante }}</td>
-                            <td>{{ contact.date |date('d/m/y') }}</td>
-                            <td>{{ contact.filiale }}</td>
-                            <td>{{ contact.nom }}</td>
-                            <td>{{ contact.telephone }}</td>
-                            <td>{{ contact.adresseExpertise }}</td>
-                            <td>{{ contact.origine }}</td>
-                            <td>{{ contact.suites }}</td>
-                            <td><a href="#"{% if contact.statut == 'Pas de retour expert' %} class="btn bg-danger-subtle"
-                                {% elseif contact.statut == 'En cours' %} class="btn bg-primary-subtle"
-                                {% elseif contact.statut == 'Devis signé' %} class="btn bg-success-subtle"
-                                {% elseif contact.statut == 'Annulé' %} class="btn bg-secondary-subtle"
-                                {% elseif contact.statut == 'Pas de retour client'%} class="btn bg-warning-subtle"
-                                {% else %} class=""{% endif %}>{{ contact.statut }}</a>
-                            </td>
-                            <td class="fs-6">{{ contact.dateUpdate |date('d/m/y') }}</td>
-                            <td>
-                                <a class="btn bg-warning-subtle  text-black-50 " style="text-decoration: none" href="{{ path('app_contact_edit', {'id' : contact.id}) }}">modifier</a>
-                                <a class="btn bg-success-subtle" href="{{ path('creerClient', {'id': contact.id}) }}"  >créer</a>
-                            </td>
+                <div class="container-fluid">
+                    <table class="table table-striped text-center">
+                        <tr class="">
+                            <th>Asssitante</th>
+                            <th>Date contact</th>
+                            <th>Filiale</th>
+                            <th>Nom / Raison sociale</th>
+                            <th>Téléphone</th>
+                            <th>Adresse expertise</th>
+                            <th>Origine</th>
+                            <th>Suites</th>
+                            <th>Statut</th>
+                            <th>Dernière MAJ</th>
+                            <th>Action</th>
                         </tr>
+                        {% for contact in contacts %}
+                            <tr>
+                                <td>{{ contact.assistante }}</td>
+                                <td>{{ contact.date |date('d/m/y') }}</td>
+                                <td>{{ contact.filiale }}</td>
+                                <td>{{ contact.nom }}</td>
+                                <td>{{ contact.telephone }}</td>
+                                <td>{{ contact.adresseExp }} {{ contact.codePostalExp }} {{ contact.villeExp }}</td>
+                                <td>{{ contact.origine }}</td>
+                                <td>{{ contact.suites }}</td>
+                                <td><a href="#"{% if contact.statut == 'Pas de retour expert' %} class="btn bg-danger-subtle"
+                                    {% elseif contact.statut == 'En cours' %} class="btn bg-primary-subtle"
+                                    {% elseif contact.statut == 'Devis signé' %} class="btn bg-success-subtle"
+                                    {% elseif contact.statut == 'Annulé' %} class="btn bg-secondary-subtle"
+                                    {% elseif contact.statut == 'Pas de retour client'%} class="btn bg-warning-subtle"
+                                    {% else %} class=""{% endif %}>{{ contact.statut }}</a>
+                                </td>
+                                <td class="fs-6">{{ contact.dateUpdate |date('d/m/y') }}</td>
+                                <td>
+                                    <a class="btn bg-warning-subtle  text-black-50 " style="text-decoration: none" href="{{ path('app_contact_edit', {'id' : contact.id}) }}">modifier</a>
+                                    <a class="btn bg-success-subtle" href="{{ path('creerClient', {'id': contact.id}) }}"  >créer</a>
+                                </td>
+                            </tr>
 
-                    {% endfor %}
-                </table>
+                        {% endfor %}
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
 
-        {% endblock %}
+    {% endblock %}
     </body>
     </html>
 {% endblock %}

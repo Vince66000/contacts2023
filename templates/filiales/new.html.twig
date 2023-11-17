@@ -9,13 +9,16 @@
         <div class="col-1">
             <p class="text-center">{{ form_label(form.Nom) }}</p>
         </div>
-        <div class="col-4">
+        <div class="col-2">
             {{ form_widget(form.Nom) }}
         </div>
+        <div class="col-1">{{ form_label(form.ID_Avensys) }}</div>
+        <div class="col-2">{{ form_widget(form.ID_Avensys) }}</div>
         <div class="col-2">
             <button class="btn bg-primary-subtle" >{{ button_label | default('Enregistrer') }}</button>
+            <a class="btn bg-warning-subtle" href="{{ path('index') }}">Retour</a>
         </div>
-        <a href="{{ path('app_filiales_index') }}">back to list</a>
+
     </div>
     {{ form_end(form) }}
 
